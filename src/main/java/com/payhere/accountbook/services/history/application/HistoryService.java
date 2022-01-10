@@ -5,11 +5,13 @@ import com.payhere.accountbook.services.history.domain.HistoryRepository;
 import com.payhere.accountbook.services.history.domain.Writer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class HistoryService {
     private final HistoryRepository historyRepository;

@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomerExceptionHandler {
     @ExceptionHandler(DuplicateCustomerEmailException.class)
     public ResponseEntity<String> error(DuplicateCustomerEmailException e){
-        return ResponseEntity.badRequest().body(e.getMessage());
+        return ResponseEntity.badRequest().body("이미 다른 고객이 위 이메일을 사용중입니다.");
     }
 }
