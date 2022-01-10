@@ -52,6 +52,13 @@ public class HistoryService {
         history.remove(remover);
     }
 
+    public HistoryRecord restore(long historyId, Writer writer) {
+        History history = getHistory(historyId);
+
+        history.restore(writer);
+        return HistoryRecord.mapFrom(history);
+    }
+
     private History getHistory(long historyId) {
         return historyRepository.findById(historyId).orElseThrow(HistoryNotFoundException::new);
     }

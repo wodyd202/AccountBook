@@ -37,6 +37,7 @@ public class History {
     }
 
     public boolean updateMemo(Writer updater, String memo) {
+        verifyNotRemoved();
         verifyHasUpdatePermission(updater);
         if(this.memo.equals(memo)){
             return false;
@@ -46,12 +47,19 @@ public class History {
     }
 
     public boolean updateMoney(Writer updater, long money) {
+        verifyNotRemoved();
         verifyHasUpdatePermission(updater);
         if(this.money == money){
             return false;
         }
         this.money = money;
         return true;
+    }
+
+    private void verifyNotRemoved() {
+        if(isDeleted){
+           throw new AlreadyRemovedHistoryException();
+        }
     }
 
     private void verifyHasUpdatePermission(Writer updater) {
@@ -61,11 +69,13 @@ public class History {
     }
 
     public void remove(Writer remover) {
-        verifyHasRemovePermission(remover);
+        verifyNotRemoved();
+        verifyHasUpdatePermission(remover);
         isDeleted = true;
     }
 
-    private void verifyHasRemovePermission(Writer remover){
-        verifyHasUpdatePermission(remover);
+    public void restore(Writer writer) {
+        verifyHasUpdatePermission(writer);
+        isDeleted = false;
     }
 }
