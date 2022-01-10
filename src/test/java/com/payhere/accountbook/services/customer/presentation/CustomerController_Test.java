@@ -73,6 +73,17 @@ public class CustomerController_Test {
         .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("고객 회원가입")
+    void signUp() throws Exception {
+        // when
+        SignUpRequest signUpRequest = SignUpRequest.of("success@google.com", "password");
+        assertSignUp(signUpRequest)
+
+        // then
+        .andExpect(status().isCreated());
+    }
+
     private final String SIGNUP_URL = "/api/customer";
     private ResultActions assertSignUp(SignUpRequest signUpRequest) throws Exception{
         return mockMvc.perform(post(SIGNUP_URL)
