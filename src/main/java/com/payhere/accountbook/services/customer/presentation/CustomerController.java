@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static com.payhere.accountbook.web.InvalidRequestException.verifyNotHasErrors;
+
 @RestController
 @RequestMapping("/api/customer")
 @RequiredArgsConstructor
@@ -24,15 +26,9 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerRecord> signUp(@Valid @RequestBody SignUpRequest signUpRequest, Errors errors){
-        verifyNotHasError(errors);
+        verifyNotHasErrors(errors);
         signUpRequest.encodePassword(passwordEncoder);
         CustomerRecord customerRecord = customerService.signUp(signUpRequest.toSignUp());
         return ResponseEntity.status(HttpStatus.CREATED).body(customerRecord);
-    }
-
-    private void verifyNotHasError(Errors errors) {
-        if(errors.hasErrors()){
-            throw new InvalidRequestException(errors);
-        }
     }
 }

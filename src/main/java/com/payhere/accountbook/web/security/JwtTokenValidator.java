@@ -1,9 +1,6 @@
 package com.payhere.accountbook.web.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -17,10 +14,11 @@ public class JwtTokenValidator {
 
     public boolean isInvalid(JwtToken jwtToken) {
         try{
-            Jwt<Header, Claims> jwt = Jwts.parser().setSigningKey(jwtProperties.getSecretKey())
-                    .parseClaimsJwt(jwtToken.get());
+            Jws<Claims> jwt = Jwts.parser().setSigningKey(jwtProperties.getSecretKey())
+                    .parseClaimsJws(jwtToken.get());
             return jwt.getBody().getExpiration().before(new Date());
         }catch (Exception e){
+            e.printStackTrace();
             return true;
         }
     }
