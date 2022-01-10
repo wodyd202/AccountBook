@@ -2,6 +2,7 @@ package com.payhere.accountbook.services.history.presentation;
 
 import com.payhere.accountbook.services.history.application.HistoryNotFoundException;
 import com.payhere.accountbook.services.history.application.NoUpdateHistoryException;
+import com.payhere.accountbook.services.history.domain.AlreadyRemovedHistoryException;
 import com.payhere.accountbook.services.history.domain.NoUpdatePermissionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,8 @@ public class HistoryExceptionHandler {
     public void error(NoUpdateHistoryException e){}
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(HistoryNotFoundException.class)
-    public void error(HistoryNotFoundException e){}
+    @ExceptionHandler({HistoryNotFoundException.class, AlreadyRemovedHistoryException.class})
+    public void error(RuntimeException e){}
 
     @ExceptionHandler(NoUpdatePermissionException.class)
     public ResponseEntity<String> error(NoUpdatePermissionException e){

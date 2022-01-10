@@ -31,16 +31,12 @@ public class QuerydslHistoryRepository implements HistoryRepository {
     public Optional<History> findById(long historyId) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(history)
-                        .where(eqHistoryId(historyId), notDeleted())
+                        .where(eqHistoryId(historyId))
                         .fetchFirst()
         );
     }
 
     private BooleanExpression eqHistoryId(long historyId){
         return history.id.eq(historyId);
-    }
-
-    private BooleanExpression notDeleted(){
-        return history.isDeleted.eq(false);
     }
 }

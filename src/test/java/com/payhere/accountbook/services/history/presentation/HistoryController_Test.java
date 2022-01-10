@@ -191,6 +191,29 @@ public class HistoryController_Test {
                 .header(AUTHENTICATION, token));
     }
 
+    @Test
+    @DisplayName("삭제된 가계부 복구")
+    void restore() throws Exception {
+        // given
+        History removedHistory = History.of(1000L, "메모", Writer.of("email"));
+        removedHistory.remove(Writer.of("email"));
+        History history = saveHistory(removedHistory);
+
+        // when
+        String token = obtainJwtToken("email");
+        long historyId = history.getId();
+        assertRestoreHistory(token, historyId)
+
+        // then
+        .andExpect(status().isOk());
+    }
+
+    private final String RESTORE_HISTORY_URL = "/api/history/{historyId}/restore";
+    private ResultActions assertRestoreHistory(String token, long historyId) throws Exception {
+        return mockMvc.perform(post(RESTORE_HISTORY_URL, historyId)
+                .header(AUTHENTICATION, token));
+    }
+
     @Autowired HistoryRepository historyRepository;
     private History saveHistory(History history){
         historyRepository.save(history);

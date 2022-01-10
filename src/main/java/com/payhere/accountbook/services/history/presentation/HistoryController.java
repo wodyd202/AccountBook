@@ -49,6 +49,13 @@ public class HistoryController {
         historyService.remove(historyId, createWriter(principal));
     }
 
+    @PostMapping("/{historyId}/restore")
+    public ResponseEntity<HistoryRecord> restore(@PathVariable long historyId,
+                                                 Principal principal){
+        HistoryRecord historyRecord = historyService.restore(historyId, createWriter(principal));
+        return ResponseEntity.ok(historyRecord);
+    }
+
     private Writer createWriter(Principal principal){
         return Writer.of(principal.getName());
     }
