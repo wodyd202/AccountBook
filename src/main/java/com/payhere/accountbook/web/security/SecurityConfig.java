@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(HttpMethod.POST, "/api/history").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/history").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/history/**").authenticated()
                 .antMatchers(HttpMethod.PATCH, "/api/history").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/history").authenticated()
 

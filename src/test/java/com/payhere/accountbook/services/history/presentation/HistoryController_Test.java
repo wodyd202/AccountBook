@@ -13,19 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
 @AutoConfigureMockMvc
-public class HistoryController_Test {
+public class HistoryController_Test extends HistoryIntegrationTest {
     @Autowired MockMvc mockMvc;
     @Autowired ObjectMapper objectMapper;
 
@@ -212,22 +207,6 @@ public class HistoryController_Test {
     private ResultActions assertRestoreHistory(String token, long historyId) throws Exception {
         return mockMvc.perform(post(RESTORE_HISTORY_URL, historyId)
                 .header(AUTHENTICATION, token));
-    }
-
-    @Autowired HistoryRepository historyRepository;
-    private History saveHistory(History history){
-        historyRepository.save(history);
-        return history;
-    }
-
-    @Autowired CustomerRepository customerRepository;
-    @Autowired JwtTokenFactory jwtTokenFactory;
-    private String obtainJwtToken(String email){
-        if(!customerRepository.existByEmail(email)){
-            customerRepository.save(Customer.of(email, email));
-        }
-        User user = new User(email, email, Arrays.asList(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
-        return jwtTokenFactory.createToken(user).get();
     }
 
 }

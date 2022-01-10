@@ -18,7 +18,7 @@ import static com.payhere.accountbook.services.history.domain.QHistory.history;
 @Repository
 @Transactional
 @RequiredArgsConstructor
-public class QuerydslHistoryRepository implements HistoryRepository {
+public class QuerydslHistoryRepository extends AbstractHistoryRepository implements HistoryRepository {
     @PersistenceContext private EntityManager entityManager;
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -34,9 +34,5 @@ public class QuerydslHistoryRepository implements HistoryRepository {
                         .where(eqHistoryId(historyId))
                         .fetchFirst()
         );
-    }
-
-    private BooleanExpression eqHistoryId(long historyId){
-        return history.id.eq(historyId);
     }
 }

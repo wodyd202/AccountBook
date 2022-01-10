@@ -2,6 +2,7 @@ package com.payhere.accountbook.services.history.presentation;
 
 import com.payhere.accountbook.services.history.application.HistoryRecord;
 import com.payhere.accountbook.services.history.application.HistoryService;
+import com.payhere.accountbook.services.history.domain.History;
 import com.payhere.accountbook.services.history.domain.Writer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 import static com.payhere.accountbook.web.InvalidRequestException.verifyNotHasErrors;
 
@@ -19,6 +21,19 @@ import static com.payhere.accountbook.web.InvalidRequestException.verifyNotHasEr
 @RequiredArgsConstructor
 public class HistoryController {
     private final HistoryService historyService;
+
+    @GetMapping
+    public ResponseEntity<List<HistoryRecord>> getHistorys(Principal principal){
+        List<HistoryRecord> historyRecords = historyService.getHistorys(createWriter(principal));
+        return ResponseEntity.ok(historyRecords);
+    }
+
+    @GetMapping("{historyId}")
+    public ResponseEntity<HistoryRecord> getHistory(@PathVariable long historyId,
+                                                    Principal principal){
+        HistoryRecord history = historyService.getHistory(historyId, createWriter(principal));
+        return ResponseEntity.ok(history);
+    }
 
     @PostMapping
     public ResponseEntity<HistoryRecord> register(@Valid @RequestBody RegisterHistoryRequest registerHistoryRequest,
