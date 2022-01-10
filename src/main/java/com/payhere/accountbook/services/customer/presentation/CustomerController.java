@@ -6,6 +6,7 @@ import com.payhere.accountbook.web.InvalidRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +20,12 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService customerService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity<CustomerRecord> signUp(@Valid @RequestBody SignUpRequest signUpRequest, Errors errors){
         verifyNotHasError(errors);
+        signUpRequest.encodePassword(passwordEncoder);
         CustomerRecord customerRecord = customerService.signUp(signUpRequest.toSignUp());
         return ResponseEntity.status(HttpStatus.CREATED).body(customerRecord);
     }
