@@ -24,6 +24,8 @@ public class History {
     @CreatedDate
     private LocalDateTime createDateTime;
 
+    private boolean isDeleted;
+
     private History(long money, String memo, Writer writer) {
         this.money = money;
         this.memo = memo;
@@ -56,5 +58,14 @@ public class History {
         if(!writer.equals(updater)){
             throw new NoUpdatePermissionException();
         }
+    }
+
+    public void remove(Writer remover) {
+        verifyHasRemovePermission(remover);
+        isDeleted = true;
+    }
+
+    private void verifyHasRemovePermission(Writer remover){
+        verifyHasUpdatePermission(remover);
     }
 }

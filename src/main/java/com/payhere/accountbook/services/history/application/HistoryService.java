@@ -46,6 +46,12 @@ public class HistoryService {
         return !isUpdateMemo && !isUpdateMoney;
     }
 
+    public void remove(long historyId, Writer remover) {
+        History history = getHistory(historyId);
+
+        history.remove(remover);
+    }
+
     private History getHistory(long historyId) {
         return historyRepository.findById(historyId).orElseThrow(HistoryNotFoundException::new);
     }

@@ -25,7 +25,7 @@ public class HistoryController {
                                                   Errors errors,
                                                   Principal principal){
         verifyNotHasErrors(errors);
-        HistoryRecord historyRecord = historyService.register(registerHistoryRequest.toRegisterHistory(), Writer.of(principal.getName()));
+        HistoryRecord historyRecord = historyService.register(registerHistoryRequest.toRegisterHistory(), createWriter(principal));
         return ResponseEntity.status(HttpStatus.CREATED).body(historyRecord);
     }
 
@@ -38,7 +38,18 @@ public class HistoryController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
         verifyNotHasErrors(errors);
-        HistoryRecord historyRecord = historyService.update(historyId,updateHistoryRequest.toUpdateHistory(), Writer.of(principal.getName()));
+        HistoryRecord historyRecord = historyService.update(historyId,updateHistoryRequest.toUpdateHistory(), createWriter(principal));
         return ResponseEntity.ok(historyRecord);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{historyId}")
+    public void remove(@PathVariable long historyId,
+                       Principal principal){
+        historyService.remove(historyId, createWriter(principal));
+    }
+
+    private Writer createWriter(Principal principal){
+        return Writer.of(principal.getName());
     }
 }

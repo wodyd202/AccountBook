@@ -20,8 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Arrays;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -148,18 +147,54 @@ public class HistoryController_Test {
         .andExpect(status().isNoContent());
     }
 
-    @Autowired HistoryRepository historyRepository;
-    private History saveHistory(History history){
-        historyRepository.save(history);
-        return history;
-    }
-
     private final String UPDATE_HISTORY_URL = "/api/history/{historyId}";
     private ResultActions assertUpdateHistory(String token, long historyId, UpdateHistoryRequest updateHistoryRequest) throws Exception {
         return mockMvc.perform(patch(UPDATE_HISTORY_URL, historyId)
                 .header(AUTHENTICATION, token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateHistoryRequest)));
+    }
+
+    @Test
+    @DisplayName("가계부 삭제")
+    void remove() throws Exception{
+        // given
+        History history = saveHistory(History.of(1000L, "메모", Writer.of("email")));
+
+        // when
+        String token = obtainJwtToken("email");
+        long historyId = history.getId();
+        assertRemoveHistory(token, historyId)
+
+        // then
+        .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("다른 회원의 가계부를 삭제할 수 없음")
+    void noRemoveSomeoneElseHistory() throws Exception {
+        // given
+        History history = saveHistory(History.of(1000L, "메모", Writer.of("다른회원")));
+
+        // when
+        String token = obtainJwtToken("email");
+        long historyId = history.getId();
+        assertRemoveHistory(token, historyId)
+
+        // then
+        .andExpect(status().isBadRequest());
+    }
+
+    private final String REMOVE_HISTORY_URL = "/api/history/{historyId}";
+    private ResultActions assertRemoveHistory(String token, long historyId) throws Exception {
+        return mockMvc.perform(delete(REMOVE_HISTORY_URL, historyId)
+                .header(AUTHENTICATION, token));
+    }
+
+    @Autowired HistoryRepository historyRepository;
+    private History saveHistory(History history){
+        historyRepository.save(history);
+        return history;
     }
 
     @Autowired CustomerRepository customerRepository;
