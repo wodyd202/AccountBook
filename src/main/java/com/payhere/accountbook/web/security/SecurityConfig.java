@@ -39,6 +39,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/customer").permitAll()
+                .antMatchers(HttpMethod.POST, "/oauth/token").authenticated()
+
+                .antMatchers(HttpMethod.POST, "/api/history").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/history").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/api/history").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/history").authenticated()
+
+                .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

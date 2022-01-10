@@ -13,4 +13,10 @@ public class InvalidRequestException extends RuntimeException {
     public List<String> getAllMessages (){
         return errors.getAllErrors().stream().map(ObjectError::getDefaultMessage).collect(Collectors.toList());
     }
+
+    public static void verifyNotHasErrors(Errors errors){
+        if(errors.hasErrors()){
+            throw new InvalidRequestException(errors);
+        }
+    }
 }
