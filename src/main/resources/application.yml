@@ -1,3 +1,3 @@
-jwt:
-  secret-key: payhear
-  expire: 1800
+spring:
+  profiles:
+    include: database, jwt, jpa
