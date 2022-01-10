@@ -3,6 +3,7 @@ package com.payhere.accountbook.services.history.infrastructure;
 import com.payhere.accountbook.services.history.domain.History;
 import com.payhere.accountbook.services.history.domain.HistoryRepository;
 import com.payhere.accountbook.services.history.domain.QHistory;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -30,8 +31,16 @@ public class QuerydslHistoryRepository implements HistoryRepository {
     public Optional<History> findById(long historyId) {
         return Optional.ofNullable(
                 jpaQueryFactory.selectFrom(history)
-                        .where(history.id.eq(historyId))
+                        .where(eqHistoryId(historyId), notDeleted())
                         .fetchFirst()
         );
+    }
+
+    private BooleanExpression eqHistoryId(long historyId){
+        return history.id.eq(historyId);
+    }
+
+    private BooleanExpression notDeleted(){
+        return history.isDeleted.eq(false);
     }
 }
