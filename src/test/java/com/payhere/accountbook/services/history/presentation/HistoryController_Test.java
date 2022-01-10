@@ -77,7 +77,9 @@ public class HistoryController_Test {
     @Autowired CustomerRepository customerRepository;
     @Autowired JwtTokenFactory jwtTokenFactory;
     private String obtainJwtToken(String email){
-        customerRepository.save(Customer.of(email, email));
+        if(!customerRepository.existByEmail(email)){
+            customerRepository.save(Customer.of(email, email));
+        }
         User user = new User(email, email, Arrays.asList(new SimpleGrantedAuthority("ROLE_CUSTOMER")));
         return jwtTokenFactory.createToken(user).get();
     }

@@ -1,5 +1,6 @@
 package com.payhere.accountbook.services.history.presentation;
 
+import com.payhere.accountbook.services.history.application.RegisterHistory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
