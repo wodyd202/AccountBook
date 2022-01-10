@@ -33,4 +33,28 @@ public class History {
     public static History of(long money, String memo, Writer writer) {
         return new History(money, memo, writer);
     }
+
+    public boolean updateMemo(Writer updater, String memo) {
+        verifyHasUpdatePermission(updater);
+        if(this.memo.equals(memo)){
+            return false;
+        }
+        this.memo = memo;
+        return true;
+    }
+
+    public boolean updateMoney(Writer updater, long money) {
+        verifyHasUpdatePermission(updater);
+        if(this.money == money){
+            return false;
+        }
+        this.money = money;
+        return true;
+    }
+
+    private void verifyHasUpdatePermission(Writer updater) {
+        if(!writer.equals(updater)){
+            throw new NoUpdatePermissionException();
+        }
+    }
 }
