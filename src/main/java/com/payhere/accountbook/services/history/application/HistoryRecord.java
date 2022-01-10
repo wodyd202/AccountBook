@@ -2,14 +2,13 @@ package com.payhere.accountbook.services.history.application;
 
 import com.payhere.accountbook.services.history.domain.History;
 import com.payhere.accountbook.services.history.domain.Writer;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class HistoryRecord {
     private long id;
     private long money;

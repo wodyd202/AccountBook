@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class HistoryService {
@@ -61,5 +63,16 @@ public class HistoryService {
 
     private History getHistory(long historyId) {
         return historyRepository.findById(historyId).orElseThrow(HistoryNotFoundException::new);
+    }
+
+    // query
+    private final HistorySearchRepository historySearchRepository;
+
+    public HistoryRecord getHistory(long historyId, Writer writer){
+        return historySearchRepository.getHistory(historyId, writer).orElseThrow(HistoryNotFoundException::new);
+    }
+
+    public List<HistoryRecord> getHistorys(Writer writer) {
+        return historySearchRepository.getHistorys(writer);
     }
 }
