@@ -1,0 +1,11 @@
+version: "2.0"
+services:
+  accountBookApp:
+    image: dlwodyd202/accountbook
+    environment:
+      DATABASE_USERNAME:
+      DATABASE_PASSWORD:
+      DATABASE_HOST:
+      DATABASE_PORT:
+    ports:
+      - 8081:8080
