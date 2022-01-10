@@ -1,6 +1,7 @@
-package com.payhere.accountbook.services.history.presentation;
+package com.payhere.accountbook.services.history.application;
 
 import com.payhere.accountbook.services.history.domain.History;
+import com.payhere.accountbook.services.history.domain.HistoryRepository;
 import com.payhere.accountbook.services.history.domain.Writer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

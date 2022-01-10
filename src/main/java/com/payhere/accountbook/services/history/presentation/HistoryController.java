@@ -1,5 +1,7 @@
 package com.payhere.accountbook.services.history.presentation;
 
+import com.payhere.accountbook.services.history.application.HistoryRecord;
+import com.payhere.accountbook.services.history.application.HistoryService;
 import com.payhere.accountbook.services.history.domain.Writer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

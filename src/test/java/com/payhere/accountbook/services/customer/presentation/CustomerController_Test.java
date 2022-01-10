@@ -2,6 +2,7 @@ package com.payhere.accountbook.services.customer.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payhere.accountbook.services.customer.domain.Customer;
+import com.payhere.accountbook.services.customer.domain.CustomerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class CustomerController_Test {
     }
 
     @Autowired
-    StubCustomerRepository customerRepository;
+    CustomerRepository customerRepository;
 
     @Test
     @DisplayName("이미 해당 이메일로 가입한 고객이 존재하는 경우 400 에러")
