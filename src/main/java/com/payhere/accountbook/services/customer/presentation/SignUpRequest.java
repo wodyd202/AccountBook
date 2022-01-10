@@ -4,6 +4,7 @@ import com.payhere.accountbook.services.customer.application.SignUp;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,5 +25,9 @@ public class SignUpRequest {
 
     public SignUp toSignUp() {
         return SignUp.of(email, password);
+    }
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        password = passwordEncoder.encode(password);
     }
 }
