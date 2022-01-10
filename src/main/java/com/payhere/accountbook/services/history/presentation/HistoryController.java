@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -30,5 +27,18 @@ public class HistoryController {
         verifyNotHasErrors(errors);
         HistoryRecord historyRecord = historyService.register(registerHistoryRequest.toRegisterHistory(), Writer.of(principal.getName()));
         return ResponseEntity.status(HttpStatus.CREATED).body(historyRecord);
+    }
+
+    @PatchMapping("{historyId}")
+    public ResponseEntity<HistoryRecord> update(@PathVariable long historyId,
+                                                @Valid @RequestBody UpdateHistoryRequest updateHistoryRequest,
+                                                Errors errors,
+                                                Principal principal){
+        if (updateHistoryRequest.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
+        verifyNotHasErrors(errors);
+        HistoryRecord historyRecord = historyService.update(historyId,updateHistoryRequest.toUpdateHistory(), Writer.of(principal.getName()));
+        return ResponseEntity.ok(historyRecord);
     }
 }
